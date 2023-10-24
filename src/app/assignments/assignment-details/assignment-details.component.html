@@ -6,7 +6,7 @@
     <mat-card-content class="assignment-details-content">
         {{ assignment.sent ? 'Assignment rendu' : 'Assignment non rendu' }}
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions [align]="'end'">
         <button
             *ngIf="!assignment.sent"
             mat-raised-button

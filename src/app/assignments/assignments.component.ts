@@ -38,9 +38,24 @@ export class AssignmentsComponent {
             });
     }
 
-    handleDelete(assignment: Assignment): void {
-        this.assignments = this.assignments.filter(a => a !== assignment)
-        this.selectedAssignments = this.selectedAssignments?.filter(a => a !== assignment);
+    handleSelect(): void {
+        if (this.selectedAssignments?.length) {
+            this.openDetails(this.selectedAssignments[0]);
+        }
+    }
+
+    openDetails(assignment: Assignment): void {
+        this.dialog
+            .open(AssignmentDetailsComponent, {
+                data: assignment
+            })
+            .afterClosed()
+            .subscribe((deletedAssignment?: Assignment) => {
+                if (deletedAssignment) {
+                    this.assignments = this.assignments.filter(a => a !== assignment)
+                }
+                this.selectedAssignments = this.selectedAssignments?.filter(a => a !== assignment);
+            });
     }
 
 }

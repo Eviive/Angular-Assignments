@@ -1,11 +1,11 @@
 import { DatePipe, NgIf, TitleCasePipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
 import { Assignment } from "@app/assignments/assignments.model";
-import { AssignmentsService } from "@app/assignments/assignments.service";
+import { AssignmentsService } from "@app/shared/services/assignments.service";
 import { Destroyed } from "@app/shared/utils/destroyed.component";
 
 @Component({
@@ -17,8 +17,7 @@ import { Destroyed } from "@app/shared/utils/destroyed.component";
 })
 export class AssignmentDetailsComponent extends Destroyed {
 
-    @Input({ required: true })
-    assignment!: Assignment;
+    assignment: Assignment = inject(MAT_DIALOG_DATA);
 
     @Output()
     readonly deleteAssignment = new EventEmitter<Assignment>();
@@ -27,7 +26,8 @@ export class AssignmentDetailsComponent extends Destroyed {
     isDeleteLoading = false;
 
     constructor(
-        private readonly assignmentsService: AssignmentsService
+        private readonly assignmentsService: AssignmentsService,
+        private readonly dialogRef: MatDialogRef<AssignmentDetailsComponent>
     ) {
         super();
     }
@@ -55,7 +55,7 @@ export class AssignmentDetailsComponent extends Destroyed {
             .deleteAssignment(this.assignment)
             .pipe(this.untilDestroyed())
             .subscribe({
-                next: () => this.deleteAssignment.emit(this.assignment),
+                next: assignment => this.dialogRef.close(assignment),
                 error: () => this.isDeleteLoading = false,
                 complete: () => this.isDeleteLoading = false
             });

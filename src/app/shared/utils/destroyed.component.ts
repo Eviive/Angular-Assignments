@@ -7,7 +7,7 @@ export class Destroyed {
     private readonly destroyRef = inject(DestroyRef);
 
     protected untilDestroyed<T>(): MonoTypeOperatorFunction<T> {
-        return takeUntilDestroyed(this.destroyRef);
+        return takeUntilDestroyed<T>(this.destroyRef);
     }
 
 }

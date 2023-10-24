@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { Assignment } from "@app/assignments/assignments.model";
-import { AssignmentsService } from "@app/assignments/assignments.service";
+import { AssignmentsService } from "@app/shared/services/assignments.service";
 import { Destroyed } from "@app/shared/utils/destroyed.component";
 
 @Component({
