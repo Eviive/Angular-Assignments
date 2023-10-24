@@ -15,14 +15,14 @@ import { AssignmentComponent } from './assignment/assignment.component';
     templateUrl: './assignments.component.html',
     styleUrls: ['./assignments.component.scss'],
     standalone: true,
-    imports: [NgIf, MatButtonModule, AssignmentFormComponent, AssignmentDetailsComponent, MatCardModule, MatListModule, FormsModule, NgFor, AssignmentComponent, MatDialogModule]
+    imports: [NgIf, MatButtonModule, MatCardModule, MatListModule, FormsModule, NgFor, AssignmentComponent, MatDialogModule]
 })
 export class AssignmentsComponent {
 
     @Input({ required: true })
     assignments!: Assignment[];
 
-    selectedAssignments: Assignment[] | undefined;
+    selectedAssignments?: Assignment[];
 
     constructor(
         private readonly dialog: MatDialog
@@ -30,9 +30,9 @@ export class AssignmentsComponent {
 
     openForm(): void {
         this.dialog
-            .open(AssignmentFormComponent)
+            .open<AssignmentFormComponent, never, Assignment>(AssignmentFormComponent)
             .afterClosed()
-            .subscribe((result?: Assignment) => {
+            .subscribe(result => {
                 if (!result) return;
                 this.assignments.push(result);
             });
@@ -46,13 +46,13 @@ export class AssignmentsComponent {
 
     openDetails(assignment: Assignment): void {
         this.dialog
-            .open(AssignmentDetailsComponent, {
+            .open<AssignmentDetailsComponent, Assignment, Assignment>(AssignmentDetailsComponent, {
                 data: assignment
             })
             .afterClosed()
-            .subscribe((deletedAssignment?: Assignment) => {
+            .subscribe(deletedAssignment => {
                 if (deletedAssignment) {
-                    this.assignments = this.assignments.filter(a => a !== assignment)
+                    this.assignments = this.assignments.filter(a => a !== deletedAssignment)
                 }
                 this.selectedAssignments = this.selectedAssignments?.filter(a => a !== assignment);
             });
