@@ -1,0 +1,47 @@
+<form [formGroup]="assignmentForm" (ngSubmit)="handleSubmit()">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Ajouter un assignment</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="form-content">
+                <mat-form-field>
+                    <mat-label>Titre</mat-label>
+                    <input matInput formControlName="title" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Date de rendu</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="deadline">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-checkbox formControlName="sent">Rendu</mat-checkbox>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button
+                mat-raised-button
+                color="accent"
+                class="action-btn"
+                type="submit"
+            >
+                <div class="btn-content">
+                    <mat-spinner
+                        *ngIf="isLoading"
+                        color="primary"
+                        [diameter]="20"
+                    ></mat-spinner>
+                    Ajouter
+                </div>
+            </button>
+            <button
+                mat-button
+                color="accent"
+                class="action-btn"
+                (click)="handleCancel($event)"
+            >
+                Annuler
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</form>

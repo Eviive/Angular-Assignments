@@ -1,0 +1,42 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{ assignment.title }}</mat-card-title>
+        <mat-card-subtitle>{{ assignment.deadline | date: 'fullDate' | titlecase }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="assignment-details-content">
+        {{ assignment.sent ? 'Assignment rendu' : 'Assignment non rendu' }}
+    </mat-card-content>
+    <mat-card-actions>
+        <button
+            *ngIf="!assignment.sent"
+            mat-raised-button
+            color="accent"
+            class="action-btn"
+            (click)="handleSend()"
+        >
+            <div class="btn-content">
+                <mat-spinner
+                    *ngIf="isSendLoading"
+                    color="primary"
+                    [diameter]="20"
+                ></mat-spinner>
+                Rendre
+            </div>
+        </button>
+        <button
+            mat-stroked-button
+            color="warn"
+            class="action-btn"
+            (click)="handleDelete()"
+        >
+            <div class="btn-content">
+                <mat-spinner
+                    *ngIf="isDeleteLoading"
+                    color="warn"
+                    [diameter]="20"
+                ></mat-spinner>
+                Supprimer
+            </div>
+        </button>
+    </mat-card-actions>
+</mat-card>

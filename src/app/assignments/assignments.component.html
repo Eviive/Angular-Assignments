@@ -1,0 +1,26 @@
+<app-assignment-details
+    *ngIf="selectedAssignments && selectedAssignments.length"
+    [assignment]="selectedAssignments[0]"
+    (deleteAssignment)="handleDelete($event)"
+></app-assignment-details>
+
+<mat-card>
+    <mat-card-content>
+        <mat-selection-list
+            [(ngModel)]="selectedAssignments"
+            [multiple]="false"
+        >
+            <mat-list-option *ngFor="let assignment of assignments" [value]="assignment">
+                <app-assignment [assignment]="assignment"></app-assignment>
+            </mat-list-option>
+        </mat-selection-list>
+    </mat-card-content>
+</mat-card>
+
+<button
+    mat-raised-button
+    color="accent"
+    (click)="openForm()"
+>
+    Ajouter un assignment
+</button>
