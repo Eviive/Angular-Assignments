@@ -7,22 +7,24 @@
         {{ assignment.sent ? 'Assignment rendu' : 'Assignment non rendu' }}
     </mat-card-content>
     <mat-card-actions [align]="'end'">
-        <button
-            *ngIf="!assignment.sent"
-            mat-raised-button
-            color="accent"
-            class="action-btn"
-            (click)="handleSend()"
-        >
-            <div class="btn-content">
-                <mat-spinner
-                    *ngIf="isSendLoading"
-                    color="primary"
-                    [diameter]="20"
-                ></mat-spinner>
-                Rendre
-            </div>
-        </button>
+        @if (!assignment.sent) {
+            <button
+                mat-raised-button
+                color="accent"
+                class="action-btn"
+                (click)="handleSend()"
+            >
+                <div class="btn-content">
+                    @if (isSendLoading) {
+                        <mat-spinner
+                            color="primary"
+                            [diameter]="20"
+                        ></mat-spinner>
+                    }
+                    Rendre
+                </div>
+            </button>
+        }
         <button
             mat-stroked-button
             color="warn"
@@ -30,11 +32,12 @@
             (click)="handleDelete()"
         >
             <div class="btn-content">
-                <mat-spinner
-                    *ngIf="isDeleteLoading"
-                    color="warn"
-                    [diameter]="20"
-                ></mat-spinner>
+                @if (isDeleteLoading) {
+                    <mat-spinner
+                        color="warn"
+                        [diameter]="20"
+                    ></mat-spinner>
+                }
                 Supprimer
             </div>
         </button>

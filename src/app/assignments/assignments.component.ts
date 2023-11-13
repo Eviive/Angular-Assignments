@@ -24,6 +24,8 @@ export class AssignmentsComponent {
 
     selectedAssignments?: Assignment[];
 
+    empty: Assignment[] = [];
+
     constructor(
         private readonly dialog: MatDialog
     ) {}

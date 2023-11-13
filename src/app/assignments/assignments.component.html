@@ -5,9 +5,13 @@
             (ngModelChange)="handleSelect()"
             [multiple]="false"
         >
-            <mat-list-option *ngFor="let assignment of assignments" [value]="assignment">
-                <app-assignment [assignment]="assignment"></app-assignment>
-            </mat-list-option>
+            @for (assignment of empty; track assignment.id) {
+                <mat-list-option [value]="assignment">
+                    <app-assignment [assignment]="assignment"></app-assignment>
+                </mat-list-option>
+            } @empty {
+                No assignments
+            }
         </mat-selection-list>
     </mat-card-content>
 </mat-card>
