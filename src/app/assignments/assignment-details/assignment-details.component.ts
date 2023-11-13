@@ -17,6 +17,9 @@ import { Destroyed } from "@app/shared/utils/destroyed.component";
 })
 export class AssignmentDetailsComponent extends Destroyed {
 
+    private readonly assignmentsService = inject(AssignmentsService);
+    private readonly dialogRef: MatDialogRef<AssignmentDetailsComponent, Assignment> = inject(MatDialogRef);
+
     assignment: Assignment = inject(MAT_DIALOG_DATA);
 
     @Output()
@@ -24,13 +27,6 @@ export class AssignmentDetailsComponent extends Destroyed {
 
     isSendLoading = false;
     isDeleteLoading = false;
-
-    constructor(
-        private readonly assignmentsService: AssignmentsService,
-        private readonly dialogRef: MatDialogRef<AssignmentDetailsComponent>
-    ) {
-        super();
-    }
 
     handleSend() {
         const updatedAssignment: Assignment = {

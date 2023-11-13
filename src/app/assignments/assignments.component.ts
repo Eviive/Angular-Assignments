@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -19,16 +19,12 @@ import { AssignmentComponent } from './assignment/assignment.component';
 })
 export class AssignmentsComponent {
 
+    private readonly dialog = inject(MatDialog);
+
     @Input({ required: true })
     assignments!: Assignment[];
 
     selectedAssignments?: Assignment[];
-
-    empty: Assignment[] = [];
-
-    constructor(
-        private readonly dialog: MatDialog
-    ) {}
 
     openForm(): void {
         this.dialog

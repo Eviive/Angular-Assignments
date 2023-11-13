@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -23,6 +23,10 @@ import { Destroyed } from "@app/shared/utils/destroyed.component";
 })
 export class AssignmentFormComponent extends Destroyed {
 
+    private readonly formBuilder = inject(FormBuilder);
+    private readonly assignmentsService = inject(AssignmentsService);
+    private readonly dialogRef = inject(MatDialogRef<AssignmentFormComponent>);
+
     readonly assignmentForm = this.formBuilder.group({
         title: ['', Validators.required],
         deadline: [new Date(), Validators.required],
@@ -30,14 +34,6 @@ export class AssignmentFormComponent extends Destroyed {
     });
 
     isLoading = false;
-
-    constructor(
-        private readonly formBuilder: FormBuilder,
-        private readonly assignmentsService: AssignmentsService,
-        private readonly dialogRef:MatDialogRef<AssignmentFormComponent>
-    ) {
-        super();
-    }
 
     handleSubmit() {
         if (this.assignmentForm.invalid) {

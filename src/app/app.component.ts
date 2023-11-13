@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
 import { UserService } from "@app/shared/services/user.service";
@@ -13,11 +13,7 @@ import { Destroyed } from "@app/shared/utils/destroyed.component";
 })
 export class AppComponent extends Destroyed implements OnInit {
 
-    constructor(
-        private readonly userService: UserService
-    ) {
-        super();
-    }
+    private readonly userService = inject(UserService);
 
     ngOnInit(): void {
         this.userService.users$
