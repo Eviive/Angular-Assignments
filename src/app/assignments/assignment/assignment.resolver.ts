@@ -9,4 +9,4 @@ export const assignmentResolver: ResolveFn<Assignment | null> = route =>
         .getAssignment(route.params["id"])
         .pipe(
             catchError(() => of(null))
-        )
+        );

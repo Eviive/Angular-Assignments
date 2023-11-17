@@ -1,4 +1,3 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,13 +9,13 @@ import { AssignmentItemComponent } from '@app/assignments/assignment-item/assign
 import { Assignment } from "@app/assignments/assignments.model";
 
 @Component({
-    selector: 'app-assignments',
-    templateUrl: './assignments.component.html',
-    styleUrls: ['./assignments.component.scss'],
+    selector: 'app-assignment-list',
+    templateUrl: './assignment-list.component.html',
+    styleUrls: ['./assignment-list.component.scss'],
     standalone: true,
-    imports: [NgIf, MatButtonModule, MatCardModule, MatListModule, FormsModule, NgFor, AssignmentItemComponent, MatDialogModule, RouterLink]
+    imports: [MatButtonModule, MatCardModule, MatListModule, FormsModule, AssignmentItemComponent, MatDialogModule, RouterLink]
 })
-export class AssignmentsComponent {
+export class AssignmentListComponent {
 
     @Input({ required: true })
     assignments!: Assignment[];

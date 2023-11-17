@@ -1,13 +1,13 @@
 import { Routes } from "@angular/router";
-import { assignmentsResolver } from "@app/assignments/assignment-list/assignments.resolver";
+import { assignmentListResolver } from "@app/assignments/assignment-list/assignment-list.resolver";
 import { assignmentResolver } from "@app/assignments/assignment/assignment.resolver";
 
 export const ROUTES: Routes = [
     {
         path: '',
-        loadComponent: () => import('@app/assignments/assignment-list/assignments.component').then(m => m.AssignmentsComponent),
+        loadComponent: () => import('@app/assignments/assignment-list/assignment-list.component').then(m => m.AssignmentListComponent),
         resolve: {
-            assignments: assignmentsResolver
+            assignments: assignmentListResolver
         }
     },
     {
