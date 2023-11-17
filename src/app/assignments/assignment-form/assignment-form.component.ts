@@ -48,7 +48,7 @@ export class AssignmentFormComponent extends Destroyed implements OnInit {
     }
 
     handleSubmit(): void {
-        if (!this.assignmentForm || this.assignmentForm.invalid) return;
+        if (!this.assignmentForm || !this.assignmentForm.dirty || this.assignmentForm.invalid) return;
 
         this.isLoading = true;
 
