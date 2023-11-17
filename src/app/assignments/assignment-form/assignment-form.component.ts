@@ -7,7 +7,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { Assignment } from "@app/assignments/assignments.model";
 import { AssignmentsService } from "@app/shared/services/assignments.service";
 import { Destroyed } from "@app/shared/utils/destroyed.component";
@@ -24,6 +24,7 @@ export class AssignmentFormComponent extends Destroyed implements OnInit {
     private readonly formBuilder = inject(FormBuilder);
     private readonly assignmentsService = inject(AssignmentsService);
     private readonly router = inject(Router);
+    private readonly activatedRoute = inject(ActivatedRoute);
 
     @Input()
     assignment?: Assignment | null;
@@ -34,7 +35,9 @@ export class AssignmentFormComponent extends Destroyed implements OnInit {
 
     async ngOnInit(): Promise<void> {
         if (this.assignment === null) {
-            await this.router.navigate([ "/" ]).catch(console.error);
+            await this.router.navigate([ ".." ], {
+                relativeTo: this.activatedRoute
+            });
             return;
         }
 
