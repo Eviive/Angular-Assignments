@@ -18,6 +18,10 @@ export class AssignmentsService {
         return this.http.get<Assignment[]>(`${this.baseUrl}/assignments`);
     }
 
+    getAssignment(id: number | string): Observable<Assignment> {
+        return this.http.get<Assignment>(`${this.baseUrl}/assignments/${id}`);
+    }
+
     addAssignment(assignment: Assignment): Observable<Assignment> {
         return this.http.post<Assignment>(`${this.baseUrl}/assignments`, assignment);
     }

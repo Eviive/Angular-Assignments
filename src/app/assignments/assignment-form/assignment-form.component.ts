@@ -1,15 +1,13 @@
-import { NgIf } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogRef } from "@angular/material/dialog";
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { CommonModule } from '@angular/common';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatInputModule } from "@angular/material/input";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { Router, RouterLink } from "@angular/router";
 import { Assignment } from "@app/assignments/assignments.model";
 import { AssignmentsService } from "@app/shared/services/assignments.service";
 import { Destroyed } from "@app/shared/utils/destroyed.component";
@@ -17,45 +15,61 @@ import { Destroyed } from "@app/shared/utils/destroyed.component";
 @Component({
     selector: 'app-assignment-form',
     templateUrl: './assignment-form.component.html',
-    styleUrls: ['./assignment-form.component.scss'],
+    styleUrl: './assignment-form.component.scss',
     standalone: true,
-    imports: [FormsModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatCheckboxModule, MatButtonModule, NgIf, MatProgressSpinnerModule]
+    imports: [CommonModule, MatProgressSpinnerModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, ReactiveFormsModule, MatInputModule, RouterLink]
 })
-export class AssignmentFormComponent extends Destroyed {
+export class AssignmentFormComponent extends Destroyed implements OnInit {
 
     private readonly formBuilder = inject(FormBuilder);
     private readonly assignmentsService = inject(AssignmentsService);
-    private readonly dialogRef = inject(MatDialogRef<AssignmentFormComponent>);
+    private readonly router = inject(Router);
 
-    readonly assignmentForm = this.formBuilder.group({
-        title: ['', Validators.required],
-        deadline: [new Date(), Validators.required],
-        sent: [false, Validators.required]
-    });
+    @Input()
+    assignment?: Assignment | null;
+
+    assignmentForm: FormGroup<{ [key in keyof Assignment]: FormControl<Assignment[key] | null> }> | null = null;
 
     isLoading = false;
 
-    handleSubmit() {
-        if (this.assignmentForm.invalid) {
+    async ngOnInit(): Promise<void> {
+        if (this.assignment === null) {
+            await this.router.navigate([ "/" ]).catch(console.error);
             return;
         }
 
+        this.assignmentForm = this.formBuilder.group({
+            id: this.assignment?.id ?? null,
+            title: [this.assignment?.title ?? "", Validators.required],
+            description: [this.assignment?.description ?? "", Validators.required],
+            deadline: [this.assignment?.deadline ?? new Date(), Validators.required],
+            sent: [this.assignment?.sent ?? false, Validators.required]
+        });
+    }
+
+    handleSubmit(): void {
+        if (!this.assignmentForm || this.assignmentForm.invalid) return;
+
         this.isLoading = true;
-        this.assignmentsService
-            .addAssignment(this.assignmentForm.value as Assignment)
+
+        const submission = this.assignment
+            ? this.assignmentsService.updateAssignment(this.assignmentForm.value as Assignment)
+            : this.assignmentsService.addAssignment(this.assignmentForm.value as Assignment);
+
+        submission
             .pipe(this.untilDestroyed())
             .subscribe({
                 next: assignment => {
-                    this.dialogRef.close(assignment);
+                    if (this.assignment) {
+                        Object.assign(this.assignment, assignment);
+                    }
+                    this.router
+                        .navigate([assignment.id])
+                        .catch(console.error);
                 },
                 error: () => this.isLoading = false,
                 complete: () => this.isLoading = false
             });
-    }
-
-    handleCancel($event: MouseEvent) {
-        $event.preventDefault();
-        this.dialogRef.close();
     }
 
 }

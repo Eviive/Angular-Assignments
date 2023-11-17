@@ -1,0 +1,13 @@
+<div class="wrapper">
+    <div>
+        <span matListItemTitle>{{ assignment.title }}</span>
+        <span matListItemLine>{{ assignment.deadline | date: 'shortDate' }}</span>
+    </div>
+    <a
+        mat-raised-button
+        color="accent"
+        [routerLink]="assignment.id.toString(10)"
+    >
+        See more
+    </a>
+</div>

@@ -1,4 +1,42 @@
-<div>
-    <span matListItemTitle>{{ assignment.title }}</span>
-    <span matListItemLine>{{ assignment.deadline | date: 'shortDate' }}</span>
-</div>
+@if (assignment) {
+    <mat-card class="card">
+        <mat-card-header>
+            <mat-card-title>{{ assignment!.title }}</mat-card-title>
+            <mat-card-subtitle>{{ assignment!.deadline | date: 'shortDate' }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="card-content">
+            {{ assignment!.description }}
+        </mat-card-content>
+        <mat-card-actions [align]="'end'">
+            <a
+                mat-stroked-button
+                color="accent"
+                class="action-btn"
+                routerLink="edit"
+            >
+                Editer
+            </a>
+            <button
+                mat-raised-button
+                color="accent"
+                class="action-btn"
+                type="submit"
+                (click)="handleDelete(assignment!)"
+            >
+                <div class="btn-content">
+                    @if (isLoading) {
+                        <mat-spinner
+                            color="primary"
+                            [diameter]="20"
+                        ></mat-spinner>
+                    }
+                    Supprimer
+                </div>
+            </button>
+        </mat-card-actions>
+    </mat-card>
+} @else {
+    <div>
+        <strong>Oh snap!</strong> There is no assignment with that ID.
+    </div>
+}

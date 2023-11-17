@@ -19,8 +19,7 @@ import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, RouterOutlet, withComponentInputBinding, withRouterConfig } from '@angular/router';
 import { AppComponent } from '@app/app.component';
-import { AssignmentsComponent } from '@app/assignments/assignments.component';
-import { assignmentsResolver } from '@app/assignments/assignments.resolver';
+import { ROUTES } from "src/routing";
 
 registerLocaleData(frenchLocale);
 
@@ -28,15 +27,7 @@ bootstrapApplication(AppComponent, {
     providers: [
         importProvidersFrom(BrowserModule, MatButtonModule, MatIconModule, MatDividerModule, MatInputModule, MatFormFieldModule, FormsModule, MatCheckboxModule, MatCardModule, ReactiveFormsModule, MatDatepickerModule, MatNativeDateModule, MatListModule, RouterOutlet, MatToolbarModule, MatProgressSpinnerModule),
         provideRouter(
-            [
-                {
-                    path: '',
-                    component: AssignmentsComponent,
-                    resolve: {
-                        assignments: assignmentsResolver
-                    }
-                }
-            ],
+            ROUTES,
             withRouterConfig({
                 paramsInheritanceStrategy: 'always'
             }),

@@ -1,4 +1,11 @@
 <mat-toolbar>
-    <span>My Assignments</span>
+    <a
+        mat-stroked-button
+        routerLink="/"
+    >
+        My Assignments
+    </a>
 </mat-toolbar>
-<router-outlet></router-outlet>
+<main>
+    <router-outlet></router-outlet>
+</main>
