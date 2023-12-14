@@ -8,30 +8,30 @@ import { Observable } from "rxjs";
 })
 export class AssignmentsService {
 
-    private readonly baseUrl = 'https://6527b9e5931d71583df145c6.mockapi.io';
+    private readonly baseUrl = 'https://6527b9e5931d71583df145c6.mockapi.io/assignments';
 
     constructor(
         private readonly http: HttpClient
     ) {}
 
     getAssignments(): Observable<Assignment[]> {
-        return this.http.get<Assignment[]>(`${this.baseUrl}/assignments`);
+        return this.http.get<Assignment[]>(`${this.baseUrl}`);
     }
 
     getAssignment(id: number | string): Observable<Assignment> {
-        return this.http.get<Assignment>(`${this.baseUrl}/assignments/${id}`);
+        return this.http.get<Assignment>(`${this.baseUrl}/${id}`);
     }
 
     addAssignment(assignment: Assignment): Observable<Assignment> {
-        return this.http.post<Assignment>(`${this.baseUrl}/assignments`, assignment);
+        return this.http.post<Assignment>(`${this.baseUrl}`, assignment);
     }
 
     updateAssignment(assignment: Assignment): Observable<Assignment> {
-        return this.http.put<Assignment>(`${this.baseUrl}/assignments/${assignment.id}`, assignment);
+        return this.http.put<Assignment>(`${this.baseUrl}/${assignment.id}`, assignment);
     }
 
     deleteAssignment(assignment: Assignment): Observable<Assignment> {
-        return this.http.delete<Assignment>(`${this.baseUrl}/assignments/${assignment.id}`);
+        return this.http.delete<Assignment>(`${this.baseUrl}/${assignment.id}`);
     }
 
 }
